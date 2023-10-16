@@ -50,31 +50,10 @@ const bookCanBeRemoved = () => {
 
 }
 
-const redirectRequest = async (auth, request, bookID, language) => {
-    const prepReq = httpRequest.prepareRequest({
-        auth: auth,
-        request: request,
-        serviceName: `${language}-books-service`,
-        actualUrl: `/books/${bookID}`
-    });
-
-    return await httpRequest.sendDeleteRequest(
-        prepReq.url,
-        prepReq.reqHeaders
-    )
-}
-
 const deleteBook = async (auth, req, bookID, language) => {
-    if (language !== process.env.LANGUAGE && process.env.ALL_LANGUAGES.split(' ').includes(language)) {
-        const res = await redirectRequest(auth, req, bookID, language);
-        if (res instanceof Error) {
-            return res;
-        }
-    } else {
-        const removed = remove(bookID);
-        if(removed instanceof Error) {
-            return removed;
-        }
+    const removed = remove(bookID);
+    if(removed instanceof Error) {
+        return removed;
     }
 
     return true;

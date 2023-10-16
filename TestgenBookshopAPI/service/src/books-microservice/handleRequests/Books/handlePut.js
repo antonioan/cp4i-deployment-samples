@@ -20,32 +20,6 @@ const handlePutBook = async ({rawRequest, bookID, authHeader, contentType}) => {
         return new RequestError(400, 'invalid_input', 'The language provided is not valid', 'parameter');
     }
 
-    if(rawRequest.body.language.toLowerCase() !== process.env.LANGUAGE) {
-        const languageList = process.env.ALL_LANGUAGES.split(" ");
-        if(languageList.includes(rawRequest.body.language)) {
-            const prepRequest = httpRequest.prepareRequest({
-                auth: authHeader,
-                request: rawRequest,
-                serviceName: `${rawRequest.body.language}-books-service`
-            });
-
-            const bookRes = await httpRequest.sendPutRequest(
-                prepRequest.url,
-                prepRequest.reqHeaders,
-                rawRequest.body
-            );
-
-            if(bookRes instanceof Error) {
-                return bookRes;
-            }
-
-            return ({
-                code: 200,
-                book: bookRes.data.book
-            });
-        }
-    }
-
     const authenticated = checkAuthentication(authHeader);
     if(checkAuthentication(authHeader) instanceof Error) {
         return authenticated;
