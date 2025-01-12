@@ -3,13 +3,16 @@
 runsudo=1
 tool=docker
 tag=latest
+base=public.ecr.aws/docker/library/node:latest
 
-terminate=0
+terminate=1
 unnetwork=0
 
+pull=1
+
 network=0
-build=0
-deploy=0
+build=1
+deploy=1
 
 function do_build() {
     name="$1"
@@ -45,6 +48,10 @@ fi
 
 if [ "$unnetwork" -ne 0 ]; then
     $tool network rm bookshop-network
+fi
+
+if [ "$pull" -ne 0 ]; then
+    $tool pull $base
 fi
 
 if [ "$network" -ne 0 ]; then
