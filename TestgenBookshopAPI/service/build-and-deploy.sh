@@ -1,6 +1,6 @@
 #!/bin/bash
 
-runsudo=0
+runsudo=1
 tool=docker
 tag=latest
 
@@ -68,3 +68,4 @@ if [ "$deploy" -ne 0 ]; then
     do_run "bookshop-services" "bookshop-services" 5003
     do_run "bookshop-gateway-service" "gateway-service" 5000
 fi
+
